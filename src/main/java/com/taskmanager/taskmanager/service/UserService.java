@@ -1,33 +1,50 @@
 package com.taskmanager.taskmanager.service;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
+
 import com.taskmanager.taskmanager.model.User;
 import com.taskmanager.taskmanager.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepository repo;
+    private final UserRepository repo;
 
-    // REGISTER
-    public User register(User user){
+    // ================= REGISTER / SAVE =================
+    public User save(User user){
         return repo.save(user);
     }
 
-    // LOGIN
-    public User login(String email, String password){
+    // ================= LOGIN =================
+    public User login(String email,String password){
 
-        Optional<User> user = repo.findByEmail(email);
+        User user = repo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if(user.isPresent()
-            && user.get().getPassword().equals(password)){
-            return user.get();
+        if(!user.getPassword().equals(password)){
+            throw new RuntimeException("Invalid password");
         }
 
-        return null;
+        return user;
+    }
+
+    // ================= GET ALL =================
+    public List<User> getAll(){
+        return repo.findAll();
+    }
+
+    // ================= GET ONE =================
+    public User getById(Long id){
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    // ================= DELETE =================
+    public void delete(Long id){
+        repo.deleteById(id);
     }
 }

@@ -14,19 +14,11 @@ public class UserController {
 
     private final UserService service;
 
-    // ================= REGISTER =================
-    @PostMapping("/register")
-    public User register(@RequestBody User user){
+    @PostMapping
+    public User create(@RequestBody User user){
         return service.save(user);
     }
 
-    // ================= LOGIN =================
-    @PostMapping("/login")
-    public User login(@RequestBody User user){
-        return service.login(user.getEmail(), user.getPassword());
-    }
-
-    // ================= CRUD =================
     @GetMapping
     public List<User> getAll(){
         return service.getAll();

@@ -1,9 +1,12 @@
 package com.taskmanager.taskmanager.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
+@Data
 public class User {
 
     @Id
@@ -17,15 +20,10 @@ public class User {
 
     private String password;
 
-    // getters setters
-    public Long getId() { return id; }
+    private String role;
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    private String status;
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 }
